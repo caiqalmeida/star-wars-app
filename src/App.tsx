@@ -226,10 +226,10 @@ function App() {
  
       <Box sx={{background: "white", padding: "1rem", borderRadius: "4px", m: "2rem 0", display: "inline-block"}}>
         <PersonSearch onButtonSearchClick={fetchSearch} handleSetSearchTerm={setSearchTerm} searchTerm={searchTerm} isLoadingFiltersData={isLoadingFiltersData}  />
-        <PersonFilter isLoadingFiltersData={isLoadingFiltersData} onButtonFilterClick={handleFilter} />
+        <PersonFilter isLoadingFiltersData={isLoadingFiltersData} onButtonFilterClick={handleFilter} isSearching={isSearching} />
       </Box>
 
-      {isSearching && <Button  variant="contained" color="error" sx={{marginBottom: "1.5rem"}} onClick={() => clearSearch()} >Clear search</Button>}
+      {isSearching && <Button  variant="contained" color="error" sx={{marginBottom: "1.5rem", display: "block"}} onClick={() => clearSearch()} >Clear search</Button>}
 
       <PersonList currentPage={currentPage} handleOpenModal={handleOpen} isLoading={isLoadingPeople || isLoadingSearch} people={people} isSearching={isSearching} />
 

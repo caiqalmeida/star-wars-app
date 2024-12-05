@@ -4,9 +4,10 @@ import { useState } from "react";
 interface PersonFilterProps {
   onButtonFilterClick: ({planetsTermFilter, speciesTermFilter, starshipsTermFilter} : {planetsTermFilter: string, speciesTermFilter: string, starshipsTermFilter: string}) => void;
   isLoadingFiltersData: boolean;
+  isSearching: boolean;
 }
 
-export function PersonFilter ({onButtonFilterClick, isLoadingFiltersData}: PersonFilterProps) {
+export function PersonFilter ({onButtonFilterClick, isLoadingFiltersData, isSearching}: PersonFilterProps) {
   const [planetsTermFilter, setPlanetsTermFilter] = useState('');
   const [speciesTermFilter, setSpeciesTermFilter] = useState('');
   const [starshipsTermFilter, setStarshipsTermFilter] = useState('');
@@ -75,7 +76,7 @@ export function PersonFilter ({onButtonFilterClick, isLoadingFiltersData}: Perso
       }}
      />
 
-    <Button disabled={isLoadingFiltersData} variant="contained" sx={{height: "56px"}} onClick={() => onButtonFilterClick({planetsTermFilter, speciesTermFilter, starshipsTermFilter})} >Filter</Button>
+    <Button disabled={isLoadingFiltersData || !isSearching} variant="contained" sx={{height: "56px"}} onClick={() => onButtonFilterClick({planetsTermFilter, speciesTermFilter, starshipsTermFilter})} >Filter</Button>
   </Box>
   )
 }
