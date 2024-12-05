@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import { getPeople, getPlanets, getSearch, getSpecies, getStarships } from "./services/swapi";
 
@@ -11,6 +11,7 @@ import { PersonPagination } from "./components/PersonPagination";
 import { Person, Planet, Specie, Starship } from "./types/swapi";
 
 import StarWarsImage from './assets/star-wars-lettering.png'
+import { PersonFilter } from "./components/PersonFilter";
 
 function App() {
 
@@ -70,6 +71,7 @@ function App() {
     }
   };
 
+  // TO DO: Refactor, ugly
   const fetchFiltersData = async () => {
     try {
       setIsLoadingFiltersData(true)
@@ -175,11 +177,9 @@ function App() {
 
         if(person.species.length > 0) {
           person.species.forEach((specie, index) => {
-            console.log('specie', specie)
             person.species[index] = filtersData.species[specie]
           })
         }
-
 
         if(person.starships.length > 0) {
           person.starships.forEach((starship, index) => {
@@ -197,6 +197,13 @@ function App() {
       setisLoadingSearch(false)
     }
   };
+
+  // TO DO: Refactor, should filter when not searching too
+  const handleFilter = ({planetsTermFilter, speciesTermFilter, starshipsTermFilter} : {planetsTermFilter: string, speciesTermFilter: string, starshipsTermFilter: string}) => {
+    const filteredPeople = people.filter(person =>  (person.homeworld.toLowerCase().includes(planetsTermFilter.toLowerCase()) || !planetsTermFilter) && (person.species.some(specie => specie.toLowerCase().includes(speciesTermFilter.toLowerCase())) || !speciesTermFilter ) && (person.starships.some(starship => starship.toLowerCase().includes(starshipsTermFilter.toLowerCase())) || !starshipsTermFilter ))
+
+    setPeople(filteredPeople)
+  }
 
   const clearSearch = () => {
     setSearchTerm('')
@@ -217,7 +224,10 @@ function App() {
     <>
       <img src={StarWarsImage} width={250} style={{ display: "block", margin: "2rem auto 1rem"}} />
  
-      <PersonSearch onButtonSearchClick={fetchSearch} handleSetSearchTerm={setSearchTerm} searchTerm={searchTerm} isLoadingFiltersData={isLoadingFiltersData}  />
+      <Box sx={{background: "white", padding: "1rem", borderRadius: "4px", m: "2rem 0", display: "inline-block"}}>
+        <PersonSearch onButtonSearchClick={fetchSearch} handleSetSearchTerm={setSearchTerm} searchTerm={searchTerm} isLoadingFiltersData={isLoadingFiltersData}  />
+        <PersonFilter isLoadingFiltersData={isLoadingFiltersData} onButtonFilterClick={handleFilter} />
+      </Box>
 
       {isSearching && <Button  variant="contained" color="error" sx={{marginBottom: "1.5rem"}} onClick={() => clearSearch()} >Clear search</Button>}
 

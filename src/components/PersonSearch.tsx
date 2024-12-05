@@ -18,7 +18,7 @@ export function PersonSearch ({onButtonSearchClick, searchTerm, handleSetSearchT
           alignItems: "center",
           justifyContent: "space-between",
           gap: "1rem",
-          mb: "2rem"
+          mb: "1rem"
     }}
   >
     <TextField
