@@ -6,8 +6,8 @@ export type Person = {
   birth_year: string;
   homeworld: string;
   films: string[];
-  starships: Starship[] | [];
-  species: Specie[] | [];
+  starships: string[] | [];
+  species: string[] | [];
 }
 
 export type Planet = {
