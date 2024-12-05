@@ -39,7 +39,7 @@ function App() {
     setSelectedPerson(null)
   };
 
-  const fetchPeople = async (page: number) => {
+  const fetchPeople = async ({page}: {page: number}) => {
     try {
 
       if(people[page]?.length > 0) {
@@ -93,15 +93,15 @@ function App() {
   const clearSearch = () => {
     setSearchTerm('')
     setIsSearching(false)
-    fetchPeople(1)
+    fetchPeople({page: 1})
   }
 
   const handleChangePage = (pageSum: number) => {
-    fetchPeople(currentPage+pageSum)
+    fetchPeople({page: currentPage+pageSum})
   }
 
   useEffect(() => {
-    fetchPeople(1);
+    fetchPeople({page: 1});
   }, []);
 
   return (
