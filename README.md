@@ -72,4 +72,3 @@ The production build will be available at http://localhost:3000.
 - [ ] Refactor filter logic (to work with pagination)
 - [ ] Refactor people state to handle pagination and without
 - [ ] Change complex state to handle with Redux
-- [ ] 
