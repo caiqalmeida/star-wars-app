@@ -208,10 +208,10 @@ function App() {
     fetchPeople({page: currentPage+pageSum})
   }
 
-  // useEffect(() => {
-  //   fetchPeople({page: 1});
-  //   fetchFiltersData()
-  // }, []);
+  useEffect(() => {
+    fetchPeople({page: 1});
+    fetchFiltersData()
+  }, []);
 
   return (
     <>
