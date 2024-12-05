@@ -31,10 +31,10 @@ Alternatively, dependencies will be installed within the Docker container when y
 
 ## Running the Application
 ### Development Mode
-To start the app in development mode with hot reloading (via Docker), run:
+To start the app in development mode with hot reloading, run:
 
 ```bash
-docker-compose up --build
+npm run dev
 ```
 This will:
 
