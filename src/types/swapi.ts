@@ -5,7 +5,9 @@ export type Person = {
   gender: string;
   birth_year: string;
   homeworld: string;
-  films: [string];
+  films: string[];
+  starships: Starship[] | [];
+  species: Specie[] | [];
 }
 
 export type Planet = {
@@ -13,4 +15,15 @@ export type Planet = {
   terrain: string;
   climate: string;
   population: string;
+  url: string;
+}
+
+export type Specie = {
+  name: string;
+  url: string;
+}
+
+export type Starship = {
+  name: string;
+  url: string;
 }

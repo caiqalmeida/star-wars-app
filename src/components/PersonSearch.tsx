@@ -4,9 +4,10 @@ interface PersonSearchProps {
   onButtonSearchClick: (searchTerm: string) => void;
   searchTerm: string;
   handleSetSearchTerm: (searchTerm: string) => void;
+  isLoadingFiltersData: boolean;
 }
 
-export function PersonSearch ({onButtonSearchClick, searchTerm, handleSetSearchTerm}: PersonSearchProps) {
+export function PersonSearch ({onButtonSearchClick, searchTerm, handleSetSearchTerm, isLoadingFiltersData}: PersonSearchProps) {
   return (
     <Box
     sx={{ 
@@ -38,7 +39,7 @@ export function PersonSearch ({onButtonSearchClick, searchTerm, handleSetSearchT
         },
       }}
     />
-    <Button variant="contained" sx={{height: "56px"}} onClick={() => onButtonSearchClick(searchTerm)} >Search</Button>
+    <Button disabled={isLoadingFiltersData} variant="contained" sx={{height: "56px"}} onClick={() => onButtonSearchClick(searchTerm)} >Search</Button>
   </Box>
   )
 }

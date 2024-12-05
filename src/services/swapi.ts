@@ -13,7 +13,6 @@ swapiHttpClient.interceptors.response.use(
   }
 );
 
-
 export const getPeople = async ({page = 1} : {page?: number}) => {
   try {
     const response = await swapiHttpClient.get(`people/?page=${page}`);
@@ -34,6 +33,17 @@ export const getSearch = async ({searchTerm, page = 1} : {searchTerm: string, pa
   }
 };
 
+export const getPlanets = async ({page = 1} : {page?: number}) => {
+  try {
+    const response = await swapiHttpClient.get(`planets/?page=${page}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching planets:', error);
+    throw error;
+  }
+};
+
+
 export const getPlanet = async ({id} : {id: string}) => {
   try {
     const response = await swapiHttpClient.get(`planets/${id}/`);
@@ -43,4 +53,45 @@ export const getPlanet = async ({id} : {id: string}) => {
     throw error;
   }
 };
+
+export const getStarships = async ({page = 1} : {page?: number}) => {
+  try {
+    const response = await swapiHttpClient.get(`starships/?page=${page}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching starships:', error);
+    throw error;
+  }
+};
+
+export const getStarship = async ({id} : {id: string}) => {
+  try {
+    const response = await swapiHttpClient.get(`starships/${id}/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching starship:', error);
+    throw error;
+  }
+};
+
+export const getSpecies = async ({page = 1} : {page?: number}) => {
+  try {
+    const response = await swapiHttpClient.get(`species/?page=${page}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching starships:', error);
+    throw error;
+  }
+};
+
+export const getSpecie = async ({id} : {id: string}) => {
+  try {
+    const response = await swapiHttpClient.get(`species/${id}/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching specie:', error);
+    throw error;
+  }
+};
+
 

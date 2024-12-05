@@ -7,6 +7,7 @@ import { getPersonByName } from '../services/swdatabank';
 import { PersonAditionalInfo } from '../types/swdatabank';
 
 import DefaultImage from '../assets/star-wars-lettering.png'
+import { getSWAPIUrlId } from '../utils/url';
 
 const style = {
   position: 'absolute',
@@ -21,9 +22,7 @@ const style = {
   color: 'black'
 };
 
-function getURLID(url: string) {
-  return url.split("planets/")[1].replace('/', '')
-}
+
 
 interface PersonModalProps {
   open: boolean;
@@ -42,7 +41,7 @@ export function PersonModal ({open, handleClose,person} : PersonModalProps) {
   const fetchPlanet = async () => {
     try {
       setIsLoadingPlanet(true)
-      const id = getURLID(person.homeworld)
+      const id = getSWAPIUrlId({url: person.homeworld, splitBy: "planets"})
       const fetchedPlanet = await getPlanet({id});
       setPlanet(fetchedPlanet);
       setIsLoadingPlanet(false)
