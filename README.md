@@ -57,3 +57,19 @@ Start the app in production mode:
 docker-compose up --build
 ```
 The production build will be available at http://localhost:3000.
+
+---
+
+# To fix
+
+- [ ] Typescript type errors (principally, people array)
+- [ ] Handle API errors
+- [ ] Fix lint can't find vitest (vi) namespace
+
+# To improve
+
+- [ ] Refactor search logic
+- [ ] Refactor filter logic (to work with pagination)
+- [ ] Refactor people state to handle pagination and without
+- [ ] Change complex state to handle with Redux
+- [ ] 
