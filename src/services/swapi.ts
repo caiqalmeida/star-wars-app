@@ -24,12 +24,22 @@ export const getPeople = async ({page = 1} : {page?: number}) => {
   }
 };
 
+export const getSearch = async ({searchTerm, page = 1} : {searchTerm: string, page?: number}) => {
+  try {
+    const response = await swapiHttpClient.get(`people/?search=${searchTerm}&page=${page}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching search people:', error);
+    throw error;
+  }
+};
+
 export const getPlanet = async ({id} : {id: string}) => {
   try {
     const response = await swapiHttpClient.get(`planets/${id}/`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching people:', error);
+    console.error('Error fetching planet:', error);
     throw error;
   }
 };

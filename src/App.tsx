@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
-import { getPeople } from "./services/swapi";
-import { Box, Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
+
+import { getPeople, getSearch } from "./services/swapi";
+
 import { PersonModal } from "./components/PersonModal";
+import { PersonList } from "./components/PersonList";
+import { PersonSearch } from "./components/PersonSearch";
+import { PersonPagination } from "./components/PersonPagination";
 
 import { Person } from "./types/swapi";
-import { PersonList } from "./components/PersonList";
 
 import StarWarsImage from './assets/star-wars-lettering.png'
 
 function App() {
 
-  const [people, setPeople] = useState<[[Person]] | []>([]);
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isSearching, setIsSearching] = useState(false);
+  const [isLoadingSearch, setisLoadingSearch] = useState(false)
+
+  const [people, setPeople] = useState<[Person[]] | []>([]);
   const [isLoadingPeople, setIsLoadingPeople] = useState(false)
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,11 +39,6 @@ function App() {
     setSelectedPerson(null)
   };
 
-  useEffect(() => {
-    fetchPeople(1);
-  }, []);
-
-
   const fetchPeople = async (page: number) => {
     try {
 
@@ -47,7 +50,7 @@ function App() {
       setIsLoadingPeople(true)
 
       const { results: fetchedPeople, next, previous } = await getPeople({page});
-      const newPeople: [[Person]] | [] = [...people];
+      const newPeople: [Person[]] | [] = [...people];
       newPeople[page] = fetchedPeople;
       setHasPreviousPage(!!previous)
       setHasNextPage(!!next)
@@ -60,27 +63,64 @@ function App() {
     }
   };
 
+  const fetchSearch = async (searchTerm: string) => {
+    try {
+      setIsSearching(true)
+      setisLoadingSearch(true)
+
+      let newPeople: [] | Person[] = [];
+      let page = 1;
+      
+      const fetchPeople = async () => {
+        const { results: fetchedPeople, next } : {results: [Person], next: string} = await getSearch({searchTerm, page});
+        newPeople = [...newPeople, ...fetchedPeople];
+        if(next) {
+          page++
+          await fetchPeople();
+        }
+      }
+
+      await fetchPeople()
+
+      setPeople(newPeople);
+      setisLoadingSearch(false)
+    } catch (error) {
+      console.error('Error fetching search:', error);
+      setisLoadingSearch(false)
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('')
+    setIsSearching(false)
+    fetchPeople(1)
+  }
+
   const handleChangePage = (pageSum: number) => {
     fetchPeople(currentPage+pageSum)
   }
 
+  useEffect(() => {
+    fetchPeople(1);
+  }, []);
+
   return (
-    <div>
+    <>
       <img src={StarWarsImage} width={250} style={{ display: "block", margin: "2rem auto 1rem"}} />
-      <PersonList currentPage={currentPage} handleOpenModal={handleOpen} isLoading={isLoadingPeople} people={people} />
-      <Box sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "1.5rem"
-      }}>
-        <Button disabled={!hasPreviousPage || isLoadingPeople || currentPage === 1} variant="outlined" onClick={() => handleChangePage(-1)}>Previous</Button>
-        <Typography>Page {currentPage}</Typography>
-        <Button disabled={!hasNextPage || isLoadingPeople} variant="outlined" onClick={() => handleChangePage(+1)}>Next</Button>
-      </Box>
+ 
+      <PersonSearch onButtonSearchClick={fetchSearch} handleSetSearchTerm={setSearchTerm} searchTerm={searchTerm}  />
+
+      {isSearching && <Button  variant="contained" color="error" sx={{marginBottom: "1.5rem"}} onClick={() => clearSearch()} >Clear search</Button>}
+
+      <PersonList currentPage={currentPage} handleOpenModal={handleOpen} isLoading={isLoadingPeople || isLoadingSearch} people={people} isSearching={isSearching} />
+
+      {!isSearching && (
+       <PersonPagination hasPreviousPage={hasPreviousPage} hasNextPage={hasNextPage} currentPage={currentPage} isLoadingPeople={isLoadingPeople} handleChangePage={handleChangePage} />
+      )}
+  
       {selectedPerson && <PersonModal open={open} handleClose={handleClose} person={selectedPerson} />}
 
-    </div>
+    </>
   );
 }
 
